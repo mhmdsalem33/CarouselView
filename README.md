@@ -70,5 +70,87 @@ data class CarouselModel( val imageUrl : String )
 
 ```
 
+5. ** Create your item_carousel layout file :
+
+```jsx
+
+ <?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="292.5dp"
+    android:layout_height="550dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardCornerRadius="50dp"
+    app:cardElevation="0dp"
+    android:layout_marginHorizontal="2dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/cover"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/fried_chicken"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/remove_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:padding="20dp"
+            android:src="@drawable/clear"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/white" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
+
+
+
+```
+
+5. **Create Your Data**
+To display items in the carousel, you can create a data class and populate it with image URLs. Below is an example of some fake data to help you get started:
+
+```jsx
+class StaticData {
+
+    val carouselItems = mutableListOf(
+        CarouselModel(imageUrl = "https://images.pexels.com/photos/18908094/pexels-photo-18908094/free-photo-of-pile-on-pancakes-with-sugar-powder-chocolate-and-fruits.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"),
+        CarouselModel(imageUrl = "https://images.pexels.com/photos/16386492/pexels-photo-16386492/free-photo-of-chocolate-cake-with-strawberries.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"),
+        CarouselModel(imageUrl = "https://images.pexels.com/photos/14686445/pexels-photo-14686445.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"),
+        CarouselModel(imageUrl = "https://images.pexels.com/photos/13522852/pexels-photo-13522852.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"),
+        CarouselModel(imageUrl = "https://images.pexels.com/photos/1109197/pexels-photo-1109197.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"),
+        CarouselModel(imageUrl = "https://images.pexels.com/photos/7225621/pexels-photo-7225621.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load"),
+        CarouselModel(imageUrl = "https://images.pexels.com/photos/7225242/pexels-photo-7225242.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"),
+        CarouselModel(imageUrl = "https://images.pexels.com/photos/15298781/pexels-photo-15298781/free-photo-of-ramen-in-bowl.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"),
+        CarouselModel(imageUrl = "https://images.pexels.com/photos/2641886/pexels-photo-2641886.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"),
+    )
+
+
+   private val imageList = mutableListOf(
+        "https://images.pexels.com/photos/16877270/pexels-photo-16877270/free-photo-of-close-up-of-a-burger-with-a-lot-of-melted-cheese.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load",
+        "https://images.pexels.com/photos/8882936/pexels-photo-8882936.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load",
+        "https://images.pexels.com/photos/8880730/pexels-photo-8880730.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load",
+        "https://images.pexels.com/photos/12944635/pexels-photo-12944635.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load",
+        "https://images.pexels.com/photos/11354334/pexels-photo-11354334.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load",
+        "https://images.pexels.com/photos/6205798/pexels-photo-6205798.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load",
+    )
+
+    val carouselItemsTwo = imageList.map { CarouselModel(it) }
+
+
+
+}
+
+
+```
 
 
