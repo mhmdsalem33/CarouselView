@@ -491,7 +491,7 @@ private fun initWaveCarouselLayoutManager() {
 ```
 
 
-
+```jsx
 Contact Me
 I’d love to hear from you! Feel free to reach out to me via email at:
 
@@ -499,6 +499,7 @@ I’d love to hear from you! Feel free to reach out to me via email at:
 🔗 LinkedIn: https://www.linkedin.com/in/mhmd-salem-a004a0213/
 
 Let’s connect and explore opportunities together!
+```
 
 
 ## License
