@@ -153,4 +153,208 @@ class StaticData {
 
 ```
 
+6. **Create an Adapter for the Carousel View Library** You can create a custom adapter for the carousel view library, which can also accept list adapters. Below is an example to help you get started:
+
+```jsx
+package com.salem.carouselview.activity
+
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import androidx.recyclerview.widget.RecyclerView
+import com.salem.carouselview.R
+import com.salem.carouselview.carousel_model.CarouselModel
+import com.salem.carouselview.databinding.CarouselItemBinding
+import com.salem.carouselview.extentions.OnSingleClick.onSingleClick
+import com.salem.carouselview.extentions.loadImage
+
+class CarouselAdapter : RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder>() {
+
+    var onItemClick: ((item : CarouselModel, position: Int) -> Unit)? = null
+    private var items = mutableListOf<CarouselModel>()
+    private var recyclerView: RecyclerView? = null
+
+    // Attach the RecyclerView instance for scroll handling
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        this.recyclerView = recyclerView
+    }
+
+    // ViewHolder class for binding
+    inner class CarouselViewHolder( val binding: CarouselItemBinding ) : RecyclerView.ViewHolder(binding.root)
+
+    // Inflating the ViewHolder with the layout
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarouselViewHolder {
+        val binding = CarouselItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return CarouselViewHolder(binding)
+    }
+
+    // Binding data to the ViewHolder
+    override fun onBindViewHolder(holder: CarouselViewHolder, position: Int) {
+        val item = items[position]
+
+        holder.binding.cover.loadImage(item.imageUrl) // Load the image
+
+        // Set click for item
+        holder.itemView.onSingleClick {
+            onItemClick?.invoke( item ,  position)
+        }
+
+        // Set click for remove button
+        holder.binding.removeItem.setOnClickListener {
+            removeItem(item)
+        }
+
+    }
+
+    // Returning the total number of items
+    override fun getItemCount(): Int = items.size
+
+
+    fun replaceAllItems(newItems: List<CarouselModel>) {
+        this.items.clear() // Clear existing items
+        this.items.addAll(newItems) // Add new items
+        notifyDataSetChanged() // Notify the adapter of changes
+    }
+
+    fun addNewItemsWithAnimation(newItems: MutableList<CarouselModel>) {
+        recyclerView?.scrollToPosition(items.size) // Scroll to the last position
+        this.items.addAll(newItems) // Add new items
+        notifyDataSetChanged() // Notify the adapter of the changes
+
+    }
+
+
+    // Function to update the entire list and scroll to the last position smoothly
+    fun updateItems(newItems: List<CarouselModel>) {
+        recyclerView?.smoothScrollToPosition(items.size)
+        items.addAll(newItems)
+        notifyDataSetChanged()
+    }
+
+
+
+    // Function to add a single item with scrolling to the newly added position
+    fun addItem(newItem: CarouselModel) {
+        items.add(newItem)
+        recyclerView?.scrollToPosition(items.size - 1)
+        notifyItemInserted(items.size - 1) // Only notify the newly added item
+    }
+
+    // Function to add a single item with smooth scrolling to the newly added position
+    fun addItemWithSmoothScroll(newItem: CarouselModel) {
+        items.add(newItem)
+        recyclerView?.smoothScrollToPosition(items.size - 1)
+        notifyItemInserted(items.size - 1) // Only notify the newly added item
+    }
+
+
+    // Function to replace all current items with new list
+    fun replaceItems(newItems: List<CarouselModel>) {
+        items.clear()
+        items.addAll(newItems)
+        notifyDataSetChanged()
+    }
+
+    // Function to remove a specific item
+    fun removeItem(item: CarouselModel) {
+        val position = items.indexOf(item)
+        if (position >= 0) {
+            items.removeAt(position)
+            notifyItemRemoved(position)
+            Log.e("testItems" , items.toString())
+        }
+    }
+
+    // Function to remove all items
+    fun clearItems() {
+        items.clear()
+        notifyDataSetChanged()
+    }
+
+
+}
+
+
+
+```
+
+
+7. ** setup your activity or fragment** Here is example for activity
+
+```jsx
+class MainActivity : AppCompatActivity() , CarouselPositionListener {
+
+    private lateinit var binding: ActivityMainBinding
+    private val mainTag = "MainActivity"
+
+    private val carouselView by lazy { binding.carouselRecyclerView }  // 1-  init your carouselRecyclerView
+    private val staticData by lazy { StaticData() } //  2- class for our static data
+    private val carouselAdapter by lazy { CarouselAdapter() } // 3- our custom adapter you can make your own adapter
+    
+    
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+
+
+
+//        // 4- init the position listener with your fragment or activity to get the current selected position
+        carouselView.addCarouselPositionListener(this)
+
+
+        // 5- add your custom adapter
+        carouselView.adapter = carouselAdapter
+
+
+
+        // 6- set carousel view orientation
+        carouselView.setOrientation(CarouselView.HORIZONTAL )
+
+        // 7- add your data to your adapter
+        carouselAdapter.updateItems( staticData.carouselItems )
+
+
+       // 8 - optional init  linear snap helper to become items in center automatic
+      //       binding.carouselRecyclerView.initLinearSnapHelper()
+
+        // 9 init layout manager
+        initMsLayoutManager()
+    }
+
+private fun initMsLayoutManager() {
+    val msLayoutManager =
+        MsCarouselLayoutManager(
+            context = this,
+            orientation = RecyclerView.HORIZONTAL,
+            reverseLayout = false
+        )
+    msLayoutManager.scaleView(true)
+    binding.carouselRecyclerView.layoutManager = msLayoutManager
+}
+
+
+    override fun onPositionChanged(currentPosition: Int) {
+        Log.e(mainTag, currentPosition.toString())
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.carouselRecyclerView.removeCarouselPositionListener() // to prevent memory leak
+
+    }
+
+}
+
+
+```
+
+
+
 
