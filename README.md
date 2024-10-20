@@ -47,3 +47,28 @@ dependencies {
 data class CarouselModel( val imageUrl : String )
 
 ```
+
+
+4. **Add a carousel view to your xml file :
+
+```jsx
+
+<com.salem.carouselview.salem.carousel_view.CarouselView
+    android:id="@+id/carouselRecyclerView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:orientation="horizontal"
+    android:overScrollMode="never"
+    android:paddingHorizontal="10dp"
+    android:paddingTop="50dp"
+    tools:listitem="@layout/item_carousel”
+    app:layoutManager=".salem.carousel_layout_manager.CenterLayoutManager"
+    />
+
+```
+
+
+
