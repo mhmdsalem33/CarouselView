@@ -1,8 +1,26 @@
 package com.salem.carouselview.activity
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
+import com.salem.carouselview.carousel_model.CarouselModel
 import com.salem.carouselview.databinding.ActivityMainBinding
+import com.salem.carouselview.salem.carousel_layout_manager.BasicCarouselLayoutManager
+import com.salem.carouselview.salem.carousel_layout_manager.CenterLayoutManager
+import com.salem.carouselview.salem.carousel_layout_manager.CenterScaleLayoutManager
+import com.salem.carouselview.salem.carousel_layout_manager.DepthCarouselLayoutManager
+import com.salem.carouselview.salem.carousel_layout_manager.DepthCarouselLayoutManagerPlus
+import com.salem.carouselview.salem.carousel_layout_manager.FadeCarouselLayoutManager
+import com.salem.carouselview.salem.carousel_layout_manager.FlipCarouselLayoutManager
+import com.salem.carouselview.salem.carousel_layout_manager.MsCarouselLayoutManager
+import com.salem.carouselview.salem.carousel_layout_manager.Rotate3DCarouselLayoutManager
+import com.salem.carouselview.salem.carousel_layout_manager.SkewCarouselLayoutManager
+import com.salem.carouselview.salem.carousel_layout_manager.SmoothUpwardCarouselLayoutManager
+import com.salem.carouselview.salem.carousel_layout_manager.SmoothZoomLayoutManager
+import com.salem.carouselview.salem.carousel_layout_manager.TiltCarouselLayoutManager
+import com.salem.carouselview.salem.carousel_layout_manager.WaveCarouselLayoutManager
+import com.salem.carouselview.salem.listener.CarouselPositionListener
 import com.salem.carouselview.static_data.StaticData
 
 /**
@@ -12,13 +30,13 @@ import com.salem.carouselview.static_data.StaticData
  */
 
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() , CarouselPositionListener {
 
 //    com.salem.carouselview.salem.listener.CarouselPositionListener
     private lateinit var binding: ActivityMainBinding
     private val mainTag = "MainActivity"
 
-//    private val carouselView by lazy { binding.carouselRecyclerView }  // 1-  init your carouselRecyclerView
+    private val carouselView by lazy { binding.carouselRecyclerView }  // 1-  init your carouselRecyclerView
     private val staticData by lazy { StaticData() } //  2- class for our static data
     private val carouselAdapter by lazy { CarouselAdapter() } // 3- our custom adapter you can make your own adapter
     private val chooseLayoutManagerAdapter by lazy { ChooseLayoutManagerAdapter() }
@@ -30,28 +48,30 @@ class MainActivity : AppCompatActivity(){
         setContentView(binding.root)
 
 
+
+
 //        // 4- init the position listener with your fragment or activity to get the current selected position
-//        carouselView.addCarouselPositionListener(this)
-//
-//
-//        // 5- add your custom adapter
-//        carouselView.adapter = carouselAdapter
-//
+        carouselView.addCarouselPositionListener(this)
+
+
+        // 5- add your custom adapter
+        carouselView.adapter = carouselAdapter
+
 
 
         // 6- set carousel view orientation
-//        carouselView.setOrientation( com.salem.carouselview.salem.carousel_view.CarouselView.HORIZONTAL )
+        carouselView.setOrientation( com.salem.carouselview.salem.carousel_view.CarouselView.HORIZONTAL )
+
+        // 7- add your data to your adapter
+        carouselAdapter.updateItems( staticData.carouselItems )
+
 //
-//        // 7- add your data to your adapter
-//        carouselAdapter.updateItems( staticData.carouselItems )
+       // 8 - optional init  linear snap helper to become items in center automatic
+//             binding.carouselRecyclerView.initLinearSnapHelper()
+
 //
-//
-//        // 8 - optional init  linear snap helper to become items in center automatic
-//       //      binding.carouselRecyclerView.initLinearSnapHelper()
-//
-//
-//        // 9 init layout manager
-//        initMsLayoutManager()
+        // 9 init layout manager
+        initMsLayoutManager()
 
         // init the layout manager you can choose between layout manager there is a lot
         //Choose your layout manager just call the layout fun
@@ -81,27 +101,27 @@ class MainActivity : AppCompatActivity(){
 //
 ////        binding.carouselRecyclerView.centerItemIfNear()
 //
-//
-//        // on add carousel item
-//        binding.addItem.setOnClickListener {
-//            addItemWithSmoothScroll(CarouselModel("https://images.pexels.com/photos/14457216/pexels-photo-14457216.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"))
-//        }
-//
-//        // add items
-//        binding.addItems.setOnClickListener {
-//            carouselAdapter.updateItems(staticData.carouselItemsTwo)
-//        }
-//
-//        // remove all items
-//        binding.removeItems.setOnClickListener {
-//            carouselAdapter.clearItems()
-//        }
+
+        // on add carousel item
+        binding.addItem.setOnClickListener {
+            addItemWithSmoothScroll(CarouselModel("https://images.pexels.com/photos/14457216/pexels-photo-14457216.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"))
+        }
+
+        // add items
+        binding.addItems.setOnClickListener {
+            carouselAdapter.updateItems(staticData.carouselItemsTwo)
+        }
+
+        // remove all items
+        binding.removeItems.setOnClickListener {
+            carouselAdapter.clearItems()
+        }
 
 
 //        // init rec view choose layout manager
-//        initRecViewChooseLayoutManager()
-//        setDataToChooseLayoutManagerAdapter()
-//        onItemChooseLayoutManagerClick()
+        initRecViewChooseLayoutManager()
+        setDataToChooseLayoutManagerAdapter()
+        onItemChooseLayoutManagerClick()
 
 
 //        binding.carouselRecyclerView.startAutoScroll()
@@ -110,255 +130,255 @@ class MainActivity : AppCompatActivity(){
     }
 
 
-//    private fun onItemCarouselViewClick() {
-//        carouselAdapter.onItemClick = { itemModel, position ->
-//            if (binding.carouselRecyclerView.getCurrentPosition() != position) {
-//                binding.carouselRecyclerView.smoothScrollToPosition(position)
-//            }
-//        }
-//    }
-//
-//
-//    private fun initMsLayoutManager() {
-//        val msLayoutManager =
-//            com.salem.carouselview.salem.carousel_layout_manager.MsCarouselLayoutManager(
-//                context = this,
-//                orientation = RecyclerView.HORIZONTAL,
-//                reverseLayout = false
-//            )
-//        msLayoutManager.scaleView(true)
-//        binding.carouselRecyclerView.layoutManager = msLayoutManager
-//    }
-//
-//
-//    private fun initMsCarouselLayoutManager() {
-//        binding.carouselRecyclerView.layoutManager =
-//            com.salem.carouselview.salem.carousel_layout_manager.MsCarouselLayoutManager(
-//                this,
-//                orientation = RecyclerView.HORIZONTAL,
-//                false,
-//                shrinkAmount = 0.15f, // change shrink as you need
-//                shrinkDistance = 0.9f // change distance as you need
-//            )
-//    }
-//
-//    private fun initCenterLayoutManager() {
-//        binding.carouselRecyclerView.layoutManager =
-//            com.salem.carouselview.salem.carousel_layout_manager.CenterLayoutManager(
-//                this,
-//                RecyclerView.HORIZONTAL,
-//                false
-//            )
-//    }
-//
-//    private fun initCenterScaleLayoutManager() {
-//        binding.carouselRecyclerView.layoutManager =
-//            com.salem.carouselview.salem.carousel_layout_manager.CenterScaleLayoutManager(this)
-//    }
-//
-//    private fun initBasicCarouselLayoutManager() {
-//        binding.carouselRecyclerView.layoutManager =
-//            com.salem.carouselview.salem.carousel_layout_manager.BasicCarouselLayoutManager(this)
-//    }
-//
-//    private fun initDepthCarouselLayoutManager() {
-//        binding.carouselRecyclerView.layoutManager =
-//            com.salem.carouselview.salem.carousel_layout_manager.DepthCarouselLayoutManager(this)
-//    }
-//
-//    private fun initDepthCarouselLayoutManagerPlus() {
-//        binding.carouselRecyclerView.layoutManager =
-//            com.salem.carouselview.salem.carousel_layout_manager.DepthCarouselLayoutManagerPlus(
-//                this,
-//                0.5f
-//            )
-//    }
-//
-//
-//    private fun initFadeCarouselLayoutManager() {
-//        binding.carouselRecyclerView.layoutManager =
-//            com.salem.carouselview.salem.carousel_layout_manager.FadeCarouselLayoutManager(
-//                this,
-//                scaleFactor = 0.2f,
-//                fadeFactor = 0.5f
-//            )
-//    }
-
-//    private fun initFlipCarouselLayoutManager() {
-//        binding.carouselRecyclerView.layoutManager =
-//            com.salem.carouselview.salem.carousel_layout_manager.FlipCarouselLayoutManager(
-//                this,
-//                maxFlip = 50f
-//            )
-//    }
+    private fun onItemCarouselViewClick() {
+        carouselAdapter.onItemClick = { itemModel, position ->
+            if (binding.carouselRecyclerView.getCurrentPosition() != position) {
+                binding.carouselRecyclerView.smoothScrollToPosition(position)
+            }
+        }
+    }
 
 
-//    private fun initRotate3DCarouselLayoutManager() {
-//        binding.carouselRecyclerView.layoutManager =
-//            com.salem.carouselview.salem.carousel_layout_manager.Rotate3DCarouselLayoutManager(
-//                this,
-//                30f
-//            )
-//    }
-//
-//    private fun initSkewCarouselLayoutManager() {
-//        binding.carouselRecyclerView.layoutManager =
-//            com.salem.carouselview.salem.carousel_layout_manager.SkewCarouselLayoutManager(
-//                this,
-//                0.5f
-//            )
-//    }
-//
-//    private fun initSmoothUpwardCarouselLayoutManager() {
-//        binding.carouselRecyclerView.layoutManager =
-//            com.salem.carouselview.salem.carousel_layout_manager.SmoothUpwardCarouselLayoutManager(
-//                this,
-//                30f
-//            )
-//    }
-//
-//
-//    private fun initSmoothZoomLayoutManager() {
-//        val smoothLayoutManager =
-//            com.salem.carouselview.salem.carousel_layout_manager.SmoothZoomLayoutManager(
-//                this,
-//                orientation = RecyclerView.HORIZONTAL,
-//                false
-//            )
-//        smoothLayoutManager.apply {
-//            setScaleView(true)
-//            setScrollSpeed(15f)
-//            setShrinkAmounts(0.15f)
-//            setShrinkDistance(1f)
-//        }
-//        binding.carouselRecyclerView.layoutManager = smoothLayoutManager
-//
-//    }
-//
-//    private fun initTiltCarouselLayoutManager() {
-//        val tiltCarouselLayoutManager = com.salem.carouselview.salem.carousel_layout_manager.TiltCarouselLayoutManager(
-//            this
-//        ).apply { setTiltFactor(15f) }
-//        binding.carouselRecyclerView.layoutManager = tiltCarouselLayoutManager
-//    }
-//
-//    private fun initWaveCarouselLayoutManager() {
-//        binding.carouselRecyclerView.layoutManager =
-//            com.salem.carouselview.salem.carousel_layout_manager.WaveCarouselLayoutManager(
-//                this,
-//                RecyclerView.HORIZONTAL,
-//                false
-//            )
-//    }
-//
-//
-//    private fun addItemWithSmoothScroll(carouselModel: CarouselModel) {
-//        carouselAdapter.addItemWithSmoothScroll(carouselModel)
-//    }
-//
-//
-//    private fun addItemWithOutSmoothScroll(carouselModel: CarouselModel) {
-//        carouselAdapter.addItem(carouselModel)
-//    }
+    private fun initMsLayoutManager() {
+        val msLayoutManager =
+            MsCarouselLayoutManager(
+                context = this,
+                orientation = RecyclerView.HORIZONTAL,
+                reverseLayout = false
+            )
+        msLayoutManager.scaleView(true)
+        binding.carouselRecyclerView.layoutManager = msLayoutManager
+    }
 
 
-//    private fun initRecViewChooseLayoutManager() {
-//        binding.recViewChooseLayoutManager.apply {
-//            adapter = chooseLayoutManagerAdapter
-//            layoutManager =
-//                com.salem.carouselview.salem.carousel_layout_manager.CenterLayoutManager(
-//                    this@MainActivity,
-//                    RecyclerView.HORIZONTAL,
-//                    false
-//                )
-//        }
-//    }
+    private fun initMsCarouselLayoutManager() {
+        binding.carouselRecyclerView.layoutManager =
+            MsCarouselLayoutManager(
+                this,
+                orientation = RecyclerView.HORIZONTAL,
+                false,
+                shrinkAmount = 0.15f, // change shrink as you need
+                shrinkDistance = 0.9f // change distance as you need
+            )
+    }
 
-//    private fun setDataToChooseLayoutManagerAdapter() {
-//        chooseLayoutManagerAdapter.addItems(staticData.layoutManagerListName)
-//    }
+    private fun initCenterLayoutManager() {
+        binding.carouselRecyclerView.layoutManager =
+            CenterLayoutManager(
+                this,
+                RecyclerView.HORIZONTAL,
+                false
+            )
+    }
 
-//    private fun onItemChooseLayoutManagerClick() {
-//        chooseLayoutManagerAdapter.onItemClick = { carouseName ->
-//            resetRecyclerViewState()
-//            when (carouseName) {
-//                "Ms Layout Manager" -> {
-//                    initMsLayoutManager()
-//                }
-//
-//                "Center Layout Manager" -> {
-//                    initCenterLayoutManager()
-//                }
-//
-//                "Basic Carousel" -> {
-//                    initBasicCarouselLayoutManager()
-//                }
-//
-//                "Center Scale" -> {
-//                    initCenterScaleLayoutManager()
-//                }
-//
-//                "Depth Carousel" -> {
-//                    initDepthCarouselLayoutManager()
-//                }
-//
-//                "Depth Carousel +" -> {
-//                    initDepthCarouselLayoutManagerPlus()
-//                }
-//
-//                "Fade Carousel" -> {
-//                    initFadeCarouselLayoutManager()
-//                }
-//
-//                "Flip Carousel" -> {
-//                    initFlipCarouselLayoutManager()
-//                }
-//
-//                "Rotate 3D Carousel" -> {
-//                    initRotate3DCarouselLayoutManager()
-//                }
-//
-//                "Skew Carousel" -> {
-//                    initSkewCarouselLayoutManager()
-//                }
-//
-//                "Smooth Zoom Carousel" -> {
-//                    initSmoothZoomLayoutManager()
-//                }
-//
-//                "Smooth Upward Carousel" -> {
-//                    initSmoothUpwardCarouselLayoutManager()
-//                }
-//
-//                "Tilt Carousel" -> {
-//                    initTiltCarouselLayoutManager()
-//                }
-//
-//            }
-//        }
-//    }
+    private fun initCenterScaleLayoutManager() {
+        binding.carouselRecyclerView.layoutManager =
+            CenterScaleLayoutManager(this)
+    }
+
+    private fun initBasicCarouselLayoutManager() {
+        binding.carouselRecyclerView.layoutManager =
+            BasicCarouselLayoutManager(this)
+    }
+
+    private fun initDepthCarouselLayoutManager() {
+        binding.carouselRecyclerView.layoutManager =
+           DepthCarouselLayoutManager(this)
+    }
+
+    private fun initDepthCarouselLayoutManagerPlus() {
+        binding.carouselRecyclerView.layoutManager =
+            DepthCarouselLayoutManagerPlus(
+                this,
+                0.5f
+            )
+    }
 
 
-//    private fun resetRecyclerViewState() {
-//        binding.carouselRecyclerView.apply {
-//            stopScroll()
-//            itemAnimator = null
-//            adapter = null
-//            layoutManager = null
-////            binding.carouselRecyclerView.setScrollToPosition(binding.carouselRecyclerView.getCurrentPosition())
-//            adapter = carouselAdapter
-//        }
-//    }
+    private fun initFadeCarouselLayoutManager() {
+        binding.carouselRecyclerView.layoutManager =
+            FadeCarouselLayoutManager(
+                this,
+                scaleFactor = 0.2f,
+                fadeFactor = 0.5f
+            )
+    }
 
-//    override fun onPositionChanged(currentPosition: Int) {
-//        Log.e(mainTag, currentPosition.toString())
-//    }
+    private fun initFlipCarouselLayoutManager() {
+        binding.carouselRecyclerView.layoutManager =
+            FlipCarouselLayoutManager(
+                this,
+                maxFlip = 50f
+            )
+    }
 
 
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        binding.carouselRecyclerView.stopAutoScroll()
-//
-//    }
+    private fun initRotate3DCarouselLayoutManager() {
+        binding.carouselRecyclerView.layoutManager =
+            Rotate3DCarouselLayoutManager(
+                this,
+                30f
+            )
+    }
+
+    private fun initSkewCarouselLayoutManager() {
+        binding.carouselRecyclerView.layoutManager =
+            SkewCarouselLayoutManager(
+                this,
+                0.5f
+            )
+    }
+
+    private fun initSmoothUpwardCarouselLayoutManager() {
+        binding.carouselRecyclerView.layoutManager =
+            SmoothUpwardCarouselLayoutManager(
+                this,
+                30f
+            )
+    }
+
+
+    private fun initSmoothZoomLayoutManager() {
+        val smoothLayoutManager =
+            SmoothZoomLayoutManager(
+                this,
+                orientation = RecyclerView.HORIZONTAL,
+                false
+            )
+        smoothLayoutManager.apply {
+            setScaleView(true)
+            setScrollSpeed(15f)
+            setShrinkAmounts(0.15f)
+            setShrinkDistance(1f)
+        }
+        binding.carouselRecyclerView.layoutManager = smoothLayoutManager
+
+    }
+
+    private fun initTiltCarouselLayoutManager() {
+        val tiltCarouselLayoutManager = TiltCarouselLayoutManager(
+            this
+        ).apply { setTiltFactor(15f) }
+        binding.carouselRecyclerView.layoutManager = tiltCarouselLayoutManager
+    }
+
+    private fun initWaveCarouselLayoutManager() {
+        binding.carouselRecyclerView.layoutManager =
+            WaveCarouselLayoutManager(
+                this,
+                RecyclerView.HORIZONTAL,
+                false
+            )
+    }
+
+
+    private fun addItemWithSmoothScroll(carouselModel: CarouselModel) {
+        carouselAdapter.addItemWithSmoothScroll(carouselModel)
+    }
+
+
+    private fun addItemWithOutSmoothScroll(carouselModel: CarouselModel) {
+        carouselAdapter.addItem(carouselModel)
+    }
+
+
+    private fun initRecViewChooseLayoutManager() {
+        binding.recViewChooseLayoutManager.apply {
+            adapter = chooseLayoutManagerAdapter
+            layoutManager =
+                com.salem.carouselview.salem.carousel_layout_manager.CenterLayoutManager(
+                    this@MainActivity,
+                    RecyclerView.HORIZONTAL,
+                    false
+                )
+        }
+    }
+
+    private fun setDataToChooseLayoutManagerAdapter() {
+        chooseLayoutManagerAdapter.addItems(staticData.layoutManagerListName)
+    }
+
+    private fun onItemChooseLayoutManagerClick() {
+        chooseLayoutManagerAdapter.onItemClick = { carouseName ->
+            resetRecyclerViewState()
+            when (carouseName) {
+                "Ms Layout Manager" -> {
+                    initMsLayoutManager()
+                }
+
+                "Center Layout Manager" -> {
+                    initCenterLayoutManager()
+                }
+
+                "Basic Carousel" -> {
+                    initBasicCarouselLayoutManager()
+                }
+
+                "Center Scale" -> {
+                    initCenterScaleLayoutManager()
+                }
+
+                "Depth Carousel" -> {
+                    initDepthCarouselLayoutManager()
+                }
+
+                "Depth Carousel +" -> {
+                    initDepthCarouselLayoutManagerPlus()
+                }
+
+                "Fade Carousel" -> {
+                    initFadeCarouselLayoutManager()
+                }
+
+                "Flip Carousel" -> {
+                    initFlipCarouselLayoutManager()
+                }
+
+                "Rotate 3D Carousel" -> {
+                    initRotate3DCarouselLayoutManager()
+                }
+
+                "Skew Carousel" -> {
+                    initSkewCarouselLayoutManager()
+                }
+
+                "Smooth Zoom Carousel" -> {
+                    initSmoothZoomLayoutManager()
+                }
+
+                "Smooth Upward Carousel" -> {
+                    initSmoothUpwardCarouselLayoutManager()
+                }
+
+                "Tilt Carousel" -> {
+                    initTiltCarouselLayoutManager()
+                }
+
+            }
+        }
+    }
+
+
+    private fun resetRecyclerViewState() {
+        binding.carouselRecyclerView.apply {
+            stopScroll()
+            itemAnimator = null
+            adapter = null
+            layoutManager = null
+//            binding.carouselRecyclerView.setScrollToPosition(binding.carouselRecyclerView.getCurrentPosition())
+            adapter = carouselAdapter
+        }
+    }
+
+    override fun onPositionChanged(currentPosition: Int) {
+        Log.e(mainTag, currentPosition.toString())
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.carouselRecyclerView.stopAutoScroll()
+
+    }
 
 }

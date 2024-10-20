@@ -70,37 +70,37 @@
         </HorizontalScrollView>
 
 
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/rec_view_choose_layout_manager"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/horizontal_scroll"-->
-<!--            android:layout_marginTop="20dp"-->
-<!--            app:layoutManager=".salem.carousel_layout_manager.CenterLayoutManager"-->
-<!--            tools:listitem="@layout/item_choose_layout_manager"-->
-<!--            android:orientation="horizontal"-->
-<!--            />-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rec_view_choose_layout_manager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/horizontal_scroll"
+            android:layout_marginTop="20dp"
+            app:layoutManager=".salem.carousel_layout_manager.CenterLayoutManager"
+            tools:listitem="@layout/item_choose_layout_manager"
+            android:orientation="horizontal"
+            />
 
-<!--        <com.salem.carouselview.salem.carousel_view.CarouselView-->
-<!--            android:id="@+id/carouselRecyclerView"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginBottom="5dp"-->
-<!--            android:clipChildren="false"-->
-<!--            android:clipToPadding="false"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:overScrollMode="never"-->
-<!--            android:paddingHorizontal="10dp"-->
-<!--            android:paddingTop="50dp"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/rec_view_choose_layout_manager"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            tools:listitem="@layout/carousel_item"-->
-<!--            app:layoutManager=".salem.carousel_layout_manager.CenterLayoutManager"-->
-<!--            />-->
+        <com.salem.carouselview.salem.carousel_view.CarouselView
+            android:id="@+id/carouselRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:overScrollMode="never"
+            android:paddingHorizontal="10dp"
+            android:paddingTop="50dp"
+            app:layout_constraintTop_toBottomOf="@+id/rec_view_choose_layout_manager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/carousel_item"
+            app:layoutManager=".salem.carousel_layout_manager.CenterLayoutManager"
+            />
 
 
 
