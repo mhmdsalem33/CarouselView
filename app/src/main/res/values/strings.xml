@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">CarouselView</string>
+    <string name="ms_layout_manager">Ms Layout manager</string>
+    <string name="add_item">add item</string>
+    <string name="add_items">add items</string>
+    <string name="remove_items">remove items</string>
+</resources>
