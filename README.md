@@ -284,7 +284,7 @@ class CarouselAdapter : RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder>
 7. ** setup your activity or fragment** Here is example for activity
 
 ```jsx
-class MainActivity : AppCompatActivity() , CarouselPositionListener {
+class MainActivity : AppCompatActivity(), CarouselPositionListener {
 
     private lateinit var binding: ActivityMainBinding
     private val mainTag = "MainActivity"
@@ -292,16 +292,12 @@ class MainActivity : AppCompatActivity() , CarouselPositionListener {
     private val carouselView by lazy { binding.carouselRecyclerView }  // 1-  init your carouselRecyclerView
     private val staticData by lazy { StaticData() } //  2- class for our static data
     private val carouselAdapter by lazy { CarouselAdapter() } // 3- our custom adapter you can make your own adapter
-    
-    
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
 
 
 //        // 4- init the position listener with your fragment or activity to get the current selected position
@@ -312,31 +308,30 @@ class MainActivity : AppCompatActivity() , CarouselPositionListener {
         carouselView.adapter = carouselAdapter
 
 
-
         // 6- set carousel view orientation
-        carouselView.setOrientation(CarouselView.HORIZONTAL )
+        carouselView.setOrientation(CarouselView.HORIZONTAL)
 
         // 7- add your data to your adapter
-        carouselAdapter.updateItems( staticData.carouselItems )
+        carouselAdapter.updateItems(staticData.carouselItems)
 
 
-       // 8 - optional init  linear snap helper to become items in center automatic
-      //       binding.carouselRecyclerView.initLinearSnapHelper()
+        // 8 - optional init  linear snap helper to become items in center automatic
+        //       binding.carouselRecyclerView.initLinearSnapHelper()
 
         // 9 init layout manager
         initMsLayoutManager()
     }
 
-private fun initMsLayoutManager() {
-    val msLayoutManager =
-        MsCarouselLayoutManager(
-            context = this,
-            orientation = RecyclerView.HORIZONTAL,
-            reverseLayout = false
-        )
-    msLayoutManager.scaleView(true)
-    binding.carouselRecyclerView.layoutManager = msLayoutManager
-}
+    private fun initMsLayoutManager() {
+        val msLayoutManager =
+            MsCarouselLayoutManager(
+                context = this,
+                orientation = RecyclerView.HORIZONTAL,
+                reverseLayout = false
+            )
+        msLayoutManager.scaleView(true)
+        binding.carouselRecyclerView.layoutManager = msLayoutManager
+    }
 
 
     override fun onPositionChanged(currentPosition: Int) {
@@ -353,7 +348,162 @@ private fun initMsLayoutManager() {
 }
 
 
+
 ```
+
+
+8. ** Here is a lot of carousel layout manager you can use to make your own purview choose your favorite one. 
+```jsx
+ private fun initMsLayoutManager() {
+    val msLayoutManager =
+        MsCarouselLayoutManager(
+            context = this,
+            orientation = RecyclerView.HORIZONTAL,
+            reverseLayout = false
+        )
+    msLayoutManager.scaleView(true)
+    binding.carouselRecyclerView.layoutManager = msLayoutManager
+}
+
+
+private fun initMsCarouselLayoutManager() {
+    binding.carouselRecyclerView.layoutManager =
+        MsCarouselLayoutManager(
+            this,
+            orientation = RecyclerView.HORIZONTAL,
+            false,
+            shrinkAmount = 0.15f, // change shrink as you need
+            shrinkDistance = 0.9f // change distance as you need
+        )
+}
+
+private fun initCenterLayoutManager() {
+    binding.carouselRecyclerView.layoutManager =
+        CenterLayoutManager(
+            this,
+            RecyclerView.HORIZONTAL,
+            false
+        )
+}
+
+private fun initCenterScaleLayoutManager() {
+    binding.carouselRecyclerView.layoutManager =
+        CenterScaleLayoutManager(this)
+}
+
+private fun initBasicCarouselLayoutManager() {
+    binding.carouselRecyclerView.layoutManager =
+        BasicCarouselLayoutManager(this)
+}
+
+private fun initDepthCarouselLayoutManager() {
+    binding.carouselRecyclerView.layoutManager =
+       DepthCarouselLayoutManager(this)
+}
+
+private fun initDepthCarouselLayoutManagerPlus() {
+    binding.carouselRecyclerView.layoutManager =
+        DepthCarouselLayoutManagerPlus(
+            this,
+            0.5f
+        )
+}
+
+
+private fun initFadeCarouselLayoutManager() {
+    binding.carouselRecyclerView.layoutManager =
+        FadeCarouselLayoutManager(
+            this,
+            scaleFactor = 0.2f,
+            fadeFactor = 0.5f
+        )
+}
+
+private fun initFlipCarouselLayoutManager() {
+    binding.carouselRecyclerView.layoutManager =
+        FlipCarouselLayoutManager(
+            this,
+            maxFlip = 50f
+        )
+}
+
+
+private fun initRotate3DCarouselLayoutManager() {
+    binding.carouselRecyclerView.layoutManager =
+        Rotate3DCarouselLayoutManager(
+            this,
+            30f
+        )
+}
+
+private fun initSkewCarouselLayoutManager() {
+    binding.carouselRecyclerView.layoutManager =
+        SkewCarouselLayoutManager(
+            this,
+            0.5f
+        )
+}
+
+private fun initSmoothUpwardCarouselLayoutManager() {
+    binding.carouselRecyclerView.layoutManager =
+        SmoothUpwardCarouselLayoutManager(
+            this,
+            30f
+        )
+}
+
+
+private fun initSmoothZoomLayoutManager() {
+    val smoothLayoutManager =
+        SmoothZoomLayoutManager(
+            this,
+            orientation = RecyclerView.HORIZONTAL,
+            false
+        )
+    smoothLayoutManager.apply {
+        setScaleView(true)
+        setScrollSpeed(15f)
+        setShrinkAmounts(0.15f)
+        setShrinkDistance(1f)
+    }
+    binding.carouselRecyclerView.layoutManager = smoothLayoutManager
+
+}
+
+private fun initTiltCarouselLayoutManager() {
+    val tiltCarouselLayoutManager = TiltCarouselLayoutManager(
+        this
+    ).apply { setTiltFactor(15f) }
+    binding.carouselRecyclerView.layoutManager = tiltCarouselLayoutManager
+}
+
+private fun initWaveCarouselLayoutManager() {
+    binding.carouselRecyclerView.layoutManager =
+        WaveCarouselLayoutManager(
+            this,
+            RecyclerView.HORIZONTAL,
+            false
+        )
+}
+
+
+
+```
+
+
+
+Contact Me
+I’d love to hear from you! Feel free to reach out to me via email at:
+
+📧 Email: mhmd.salem33@yahoo.com
+🔗 LinkedIn: https://www.linkedin.com/in/mhmd-salem-a004a0213/
+
+Let’s connect and explore opportunities together!
+
+
+## License
+
+[![License](https://img.shields.io/static/v1?label=Licence&message=MIT&color=blue)](https://opensource.org/license/MIT)
 
 
 
