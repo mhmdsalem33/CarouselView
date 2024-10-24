@@ -20,7 +20,6 @@ import com.salem.carouselview.salem.carousel_layout_manager.SmoothUpwardCarousel
 import com.salem.carouselview.salem.carousel_layout_manager.SmoothZoomLayoutManager
 import com.salem.carouselview.salem.carousel_layout_manager.TiltCarouselLayoutManager
 import com.salem.carouselview.salem.carousel_layout_manager.WaveCarouselLayoutManager
-import com.salem.carouselview.salem.carousel_layout_manager.WaveLayoutManager
 import com.salem.carouselview.salem.carousel_view.CarouselView
 import com.salem.carouselview.salem.listener.CarouselPositionListener
 import com.salem.carouselview.static_data.StaticData
@@ -78,7 +77,7 @@ class MainActivity : AppCompatActivity() , CarouselPositionListener {
 
 //
         // 9 init layout manager
-//        initMsLayoutManager()
+        initMsLayoutManager()
 
         // init the layout manager you can choose between layout manager there is a lot
         //Choose your layout manager just call the layout fun
@@ -133,7 +132,6 @@ class MainActivity : AppCompatActivity() , CarouselPositionListener {
 
 
 
-        binding.carouselRecyclerView.layoutManager = WaveLayoutManager(this ,  )
 
     }
 

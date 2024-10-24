@@ -57,10 +57,10 @@ dependencies {
     kapt ("com.github.bumptech.glide:compiler:4.13.2")
 
 
-    implementation ("com.github.mhmdsalem33:CarouselView:1.0.1")
+//    implementation ("com.github.mhmdsalem33:CarouselView:1.0.1")
 
 
-//    implementation(project(":CarouselView"))
+    implementation(project(":CarouselView"))
 
 }
 
