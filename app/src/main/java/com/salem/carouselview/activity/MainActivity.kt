@@ -77,8 +77,7 @@ class MainActivity : AppCompatActivity() , CarouselPositionListener {
 
 //
         // 9 init layout manager
-//        initMsLayoutManager()
-        initMsCarouselLayoutManager()
+        initMsLayoutManager()
 
         // init the layout manager you can choose between layout manager there is a lot
         //Choose your layout manager just call the layout fun
@@ -103,10 +102,6 @@ class MainActivity : AppCompatActivity() , CarouselPositionListener {
 
 //        // On Carousel view Click
         onItemCarouselViewClick()
-//
-//
-//
-////        binding.carouselRecyclerView.centerItemIfNear()
 //
 
         // on add carousel item
@@ -141,11 +136,6 @@ class MainActivity : AppCompatActivity() , CarouselPositionListener {
     private fun onItemCarouselViewClick() {
         carouselAdapter.onItemClick = { itemModel, position ->
             binding.carouselRecyclerView.smoothScrollToPosition(position)
-//            binding.carouselRecyclerView.layoutManager?.smoothScrollToPosition(binding.carouselRecyclerView, null, position)
-            Log.e("testPosition" , position.toString())
-
-//            if (binding.carouselRecyclerView.getCurrentPosition() != position) {
-//            }
         }
     }
 
