@@ -20,6 +20,7 @@ import com.salem.carouselview.salem.carousel_layout_manager.SmoothUpwardCarousel
 import com.salem.carouselview.salem.carousel_layout_manager.SmoothZoomLayoutManager
 import com.salem.carouselview.salem.carousel_layout_manager.TiltCarouselLayoutManager
 import com.salem.carouselview.salem.carousel_layout_manager.WaveCarouselLayoutManager
+import com.salem.carouselview.salem.carousel_view.CarouselView
 import com.salem.carouselview.salem.listener.CarouselPositionListener
 import com.salem.carouselview.static_data.StaticData
 
@@ -30,16 +31,21 @@ import com.salem.carouselview.static_data.StaticData
  */
 
 
+
+
 class MainActivity : AppCompatActivity() , CarouselPositionListener {
 
-//    com.salem.carouselview.salem.listener.CarouselPositionListener
     private lateinit var binding: ActivityMainBinding
     private val mainTag = "MainActivity"
 
     private val carouselView by lazy { binding.carouselRecyclerView }  // 1-  init your carouselRecyclerView
     private val staticData by lazy { StaticData() } //  2- class for our static data
     private val carouselAdapter by lazy { CarouselAdapter() } // 3- our custom adapter you can make your own adapter
+
+
     private val chooseLayoutManagerAdapter by lazy { ChooseLayoutManagerAdapter() }
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +66,7 @@ class MainActivity : AppCompatActivity() , CarouselPositionListener {
 
 
         // 6- set carousel view orientation
-        carouselView.setOrientation( com.salem.carouselview.salem.carousel_view.CarouselView.HORIZONTAL )
+        carouselView.setOrientation( CarouselView.HORIZONTAL )
 
         // 7- add your data to your adapter
         carouselAdapter.updateItems( staticData.carouselItems )
@@ -71,7 +77,8 @@ class MainActivity : AppCompatActivity() , CarouselPositionListener {
 
 //
         // 9 init layout manager
-        initMsLayoutManager()
+//        initMsLayoutManager()
+        initMsCarouselLayoutManager()
 
         // init the layout manager you can choose between layout manager there is a lot
         //Choose your layout manager just call the layout fun
@@ -95,7 +102,7 @@ class MainActivity : AppCompatActivity() , CarouselPositionListener {
 
 
 //        // On Carousel view Click
-//        onItemCarouselViewClick()
+        onItemCarouselViewClick()
 //
 //
 //
@@ -104,7 +111,7 @@ class MainActivity : AppCompatActivity() , CarouselPositionListener {
 
         // on add carousel item
         binding.addItem.setOnClickListener {
-            addItemWithSmoothScroll(CarouselModel("https://images.pexels.com/photos/14457216/pexels-photo-14457216.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"))
+            addItemWithSmoothScroll(CarouselModel("https://images.pexels.com/photos/27359353/pexels-photo-27359353/free-photo-of-a-table-with-several-bowls-of-food-on-it.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load"))
         }
 
         // add items
@@ -127,14 +134,18 @@ class MainActivity : AppCompatActivity() , CarouselPositionListener {
 //        binding.carouselRecyclerView.startAutoScroll()
 
 
+
     }
 
 
     private fun onItemCarouselViewClick() {
         carouselAdapter.onItemClick = { itemModel, position ->
-            if (binding.carouselRecyclerView.getCurrentPosition() != position) {
-                binding.carouselRecyclerView.smoothScrollToPosition(position)
-            }
+            binding.carouselRecyclerView.smoothScrollToPosition(position)
+//            binding.carouselRecyclerView.layoutManager?.smoothScrollToPosition(binding.carouselRecyclerView, null, position)
+            Log.e("testPosition" , position.toString())
+
+//            if (binding.carouselRecyclerView.getCurrentPosition() != position) {
+//            }
         }
     }
 
@@ -233,7 +244,7 @@ class MainActivity : AppCompatActivity() , CarouselPositionListener {
         binding.carouselRecyclerView.layoutManager =
             SmoothUpwardCarouselLayoutManager(
                 this,
-                30f
+                35f
             )
     }
 
@@ -286,7 +297,7 @@ class MainActivity : AppCompatActivity() , CarouselPositionListener {
         binding.recViewChooseLayoutManager.apply {
             adapter = chooseLayoutManagerAdapter
             layoutManager =
-                com.salem.carouselview.salem.carousel_layout_manager.CenterLayoutManager(
+                CenterLayoutManager(
                     this@MainActivity,
                     RecyclerView.HORIZONTAL,
                     false
@@ -377,8 +388,11 @@ class MainActivity : AppCompatActivity() , CarouselPositionListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        binding.carouselRecyclerView.stopAutoScroll()
+//        binding.carouselRecyclerView.stopAutoScroll()
+        binding.carouselRecyclerView.removeCarouselPositionListener() // to prevent memory leak
 
     }
 
 }
+
+

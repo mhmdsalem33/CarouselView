@@ -3,6 +3,7 @@ import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.abs
+import androidx.recyclerview.widget.LinearSnapHelper
 
 /**
  *  Mohamed Salem
@@ -10,9 +11,19 @@ import kotlin.math.abs
  *  https://www.linkedin.com/in/mhmd-salem-a004a0213/
  */
 
-class BasicCarouselLayoutManager(context: Context) : LinearLayoutManager(context, HORIZONTAL, false) {
+class BasicCarouselLayoutManager(context: Context) : LinearLayoutManager( context, HORIZONTAL , false) {
 
     private val scaleFactor = 0.2f // Adjust this for scaling effect
+    private val snapHelper = LinearSnapHelper()
+
+    override fun onAttachedToWindow(view: RecyclerView?) {
+        super.onAttachedToWindow(view)
+
+        // Check if an OnFlingListener is already set to avoid the IllegalStateException
+        if (view?.onFlingListener == null) {
+            snapHelper.attachToRecyclerView(view)
+        }
+    }
 
     override fun scrollHorizontallyBy(dx: Int, recycler: RecyclerView.Recycler?, state: RecyclerView.State?): Int {
         val scrolled = super.scrollHorizontallyBy(dx, recycler, state)
@@ -40,4 +51,3 @@ class BasicCarouselLayoutManager(context: Context) : LinearLayoutManager(context
         }
     }
 }
-

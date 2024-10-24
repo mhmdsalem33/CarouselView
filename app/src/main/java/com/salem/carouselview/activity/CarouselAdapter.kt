@@ -84,14 +84,18 @@ class CarouselAdapter : RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder>
     fun addItem(newItem: CarouselModel) {
         items.add(newItem)
         recyclerView?.scrollToPosition(items.size - 1)
-        notifyItemInserted(items.size - 1) // Only notify the newly added item
+//        notifyItemInserted(items.size - 1) // Only notify the newly added item
+        notifyDataSetChanged()
+
     }
 
     // Function to add a single item with smooth scrolling to the newly added position
     fun addItemWithSmoothScroll(newItem: CarouselModel) {
         items.add(newItem)
         recyclerView?.smoothScrollToPosition(items.size - 1)
-        notifyItemInserted(items.size - 1) // Only notify the newly added item
+//        notifyItemInserted(items.size - 1) // Only notify the newly added item
+        notifyDataSetChanged()
+
     }
 
 
