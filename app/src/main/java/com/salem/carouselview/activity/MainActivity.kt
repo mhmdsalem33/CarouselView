@@ -135,7 +135,9 @@ class MainActivity : AppCompatActivity() , CarouselPositionListener {
 
     private fun onItemCarouselViewClick() {
         carouselAdapter.onItemClick = { itemModel, position ->
-            binding.carouselRecyclerView.smoothScrollToPosition(position)
+
+            binding.carouselRecyclerView.setSmoothScrollToPosition(position)
+            Log.e("testPosition" , position.toString())
         }
     }
 

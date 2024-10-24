@@ -39,7 +39,8 @@ class CarouselAdapter : RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder>
         holder.binding.cover.loadImage(item.imageUrl) // Load the image
 
         // Set click for item
-        holder.itemView.onSingleClick {
+        holder.itemView.setOnClickListener {
+
             onItemClick?.invoke( item ,  position)
         }
 
