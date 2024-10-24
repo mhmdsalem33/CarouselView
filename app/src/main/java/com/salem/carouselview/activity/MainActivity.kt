@@ -233,11 +233,14 @@ class MainActivity : AppCompatActivity() , CarouselPositionListener {
     }
 
     private fun initSmoothUpwardCarouselLayoutManager() {
-        binding.carouselRecyclerView.layoutManager =
-            SmoothUpwardCarouselLayoutManager(
-                this,
-                35f
-            )
+        val layoutManager = SmoothUpwardCarouselLayoutManager(this, moveUpFactor = 60f, scaleDownFactor = 0.2f, visibleItemCount = 3)
+            .apply {
+                setItemSpacing(20)
+                setRecyclerViewPadding(binding.carouselRecyclerView)
+            }
+        binding.carouselRecyclerView.layoutManager = layoutManager
+
+
     }
 
 
