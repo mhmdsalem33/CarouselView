@@ -391,6 +391,11 @@ private fun initMsCarouselLayoutManager() {
         )
 }
 
+```
+
+https://github.com/user-attachments/assets/706b904f-5214-4ab5-963a-8c0ca795734a
+
+```jsx
 private fun initCenterLayoutManager() {
     binding.carouselRecyclerView.layoutManager =
         CenterLayoutManager(
