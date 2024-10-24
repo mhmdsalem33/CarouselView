@@ -2,6 +2,9 @@
 
 CarouselView is a customizable Android library that provides a simple and efficient way to implement a carousel-like view using RecyclerView. It supports smooth scrolling, automatic scrolling, and snapping to ensure a polished user experience.
 
+## Example
+https://github.com/user-attachments/assets/c22a0a38-2443-4236-b168-081913545f0b
+
 ## Features
 
 - **Auto-Scrolling**: Automatically scroll through items with a configurable delay.
@@ -355,7 +358,7 @@ class MainActivity : AppCompatActivity(), CarouselPositionListener {
 ```
 
 
-8. ** Here is a lot of carousel layout manager you can use to make your own purview choose your favorite one. 
+8. ** Here is a lot of carousel layout manager you can use to make your own purview choose your favourite one. 
 ```jsx
  private fun initMsLayoutManager() {
     val msLayoutManager =
