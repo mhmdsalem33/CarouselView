@@ -17,7 +17,7 @@ import kotlin.math.min
 
 class SmoothZoomLayoutManager(
     context: Context,
-    orientation: Int = RecyclerView.HORIZONTAL, // Updated to use RecyclerView.HORIZONTAL
+    orientation: Int = RecyclerView.HORIZONTAL,
     reverseLayout: Boolean = false
 ) : LinearLayoutManager(context, orientation, reverseLayout) {
 
@@ -28,27 +28,29 @@ class SmoothZoomLayoutManager(
 
     override fun scrollHorizontallyBy(dx: Int, recycler: RecyclerView.Recycler?, state: RecyclerView.State?): Int {
         val scrolled = super.scrollHorizontallyBy(dx, recycler, state)
-        if (orientation == RecyclerView.HORIZONTAL) { // Updated to use RecyclerView.HORIZONTAL
-            scaleAndOffsetItems() // Apply scaling
+        if (orientation == RecyclerView.HORIZONTAL) {
+            scaleAndOffsetItems() // Apply scaling on horizontal scroll
         }
         return scrolled
     }
 
     override fun scrollVerticallyBy(dy: Int, recycler: RecyclerView.Recycler?, state: RecyclerView.State?): Int {
         val scrolled = super.scrollVerticallyBy(dy, recycler, state)
-        if (orientation == RecyclerView.VERTICAL) { // Updated to use RecyclerView.VERTICAL
-            scaleAndOffsetItems() // Apply scaling
+        if (orientation == RecyclerView.VERTICAL) {
+            scaleAndOffsetItems() // Apply scaling on vertical scroll
         }
         return scrolled
     }
 
     override fun onLayoutCompleted(state: RecyclerView.State?) {
         super.onLayoutCompleted(state)
-        scaleAndOffsetItems() // Apply scaling after layout
+        scaleAndOffsetItems() // Apply scaling after layout completion
     }
 
     private fun scaleAndOffsetItems() {
         val center = if (orientation == RecyclerView.HORIZONTAL) width / 2 else height / 2
+        val maxScale = 1f
+        val minScale = 1f - shrinkAmount
 
         for (i in 0 until childCount) {
             val child = getChildAt(i) ?: continue
@@ -59,35 +61,57 @@ class SmoothZoomLayoutManager(
             }
 
             val distanceFromCenter = abs(center - childCenter).toFloat()
-            val scale = 1 - min(shrinkAmount, distanceFromCenter / center * shrinkDistance)
+            val distanceRatio = distanceFromCenter / center
+            val scale = maxScale - min(shrinkAmount, distanceRatio * shrinkDistance)
+
+            // Apply scaling if enabled
             if (scaleView) {
-                child.scaleX = scale
-                child.scaleY = scale
+                child.scaleX = scale.coerceIn(minScale, maxScale)
+                child.scaleY = scale.coerceIn(minScale, maxScale)
             }
+
+            // Optional: Center items with slight translation based on scaling (optional)
+            child.translationX = (center - childCenter) * 0.1f * scale
         }
     }
 
-    fun setScaleView(scaleView: Boolean) {
-        this.scaleView = scaleView
+    // Allow external configuration of scaling and speed
+    fun setScaleView(enableScaling: Boolean) {
+        this.scaleView = enableScaling
     }
 
-    fun setScrollSpeed(scrollSpeed: Float) {
-        this.scrollSpeed = scrollSpeed
+    fun setScrollSpeed(newScrollSpeed: Float) {
+        this.scrollSpeed = newScrollSpeed
     }
 
-    fun setShrinkAmounts( amount : Float ){
-       this.shrinkAmount = amount
+    fun setShrinkAmount(amount: Float) {
+        this.shrinkAmount = amount
     }
 
-    fun setShrinkDistance(distance : Float) {
+    fun setShrinkDistance(distance: Float) {
         this.shrinkDistance = distance
     }
 
-
     override fun smoothScrollToPosition(recyclerView: RecyclerView, state: RecyclerView.State?, position: Int) {
-        val smoothScroller = SmoothScroller(recyclerView.context, scrollSpeed)
-        smoothScroller.targetPosition = position
-        startSmoothScroll(smoothScroller)
+        // Get the target view for the desired position
+        val targetView = findViewByPosition(position)
+
+        if (targetView != null) {
+            val center = if (orientation == RecyclerView.HORIZONTAL) recyclerView.width / 2 else recyclerView.height / 2
+            val childCenter = if (orientation == RecyclerView.HORIZONTAL) {
+                (getDecoratedLeft(targetView) + getDecoratedRight(targetView)) / 2
+            } else {
+                (getDecoratedTop(targetView) + getDecoratedBottom(targetView)) / 2
+            }
+
+            val distanceToScroll = childCenter - center
+
+            // Smooth scroll the calculated distance to center the item
+            recyclerView.smoothScrollBy(if (orientation == RecyclerView.HORIZONTAL) distanceToScroll else 0, if (orientation == RecyclerView.VERTICAL) distanceToScroll else 0)
+        } else {
+            // Fallback to default smooth scrolling
+            super.smoothScrollToPosition(recyclerView, state, position)
+        }
     }
 
     inner class SmoothScroller(context: Context, private var speed: Float) : LinearSmoothScroller(context) {
@@ -95,15 +119,19 @@ class SmoothZoomLayoutManager(
         override fun calculateDtToFit(
             viewStart: Int, viewEnd: Int, boxStart: Int, boxEnd: Int, snapPreference: Int
         ): Int {
-            return boxStart - viewStart // Aligns the view at the start
+            // Align the view in the center instead of the start
+            val viewCenter = (viewStart + viewEnd) / 2
+            val boxCenter = (boxStart + boxEnd) / 2
+            return viewCenter - boxCenter
         }
 
         override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics): Float {
+            // Adjust speed based on screen density and user-configured scrollSpeed
             return speed / displayMetrics.densityDpi
         }
 
-        fun setScrollSpeed(scrollSpeed: Float) {
-            this.speed = scrollSpeed
+        fun setScrollSpeed(newScrollSpeed: Float) {
+            this.speed = newScrollSpeed
         }
 
         override fun computeScrollVectorForPosition(targetPosition: Int): PointF? {

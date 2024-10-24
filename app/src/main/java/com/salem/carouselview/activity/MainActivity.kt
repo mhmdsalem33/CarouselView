@@ -250,9 +250,8 @@ class MainActivity : AppCompatActivity() , CarouselPositionListener {
             )
         smoothLayoutManager.apply {
             setScaleView(true)
-            setScrollSpeed(15f)
-            setShrinkAmounts(0.15f)
-            setShrinkDistance(1f)
+            setScrollSpeed(1f)
+            setShrinkDistance(0.9f)
         }
         binding.carouselRecyclerView.layoutManager = smoothLayoutManager
 
