@@ -359,7 +359,13 @@ class MainActivity : AppCompatActivity(), CarouselPositionListener {
 
 
 8. ** Here is a lot of carousel layout manager you can use to make your own purview choose your favourite one. 
+
+
+## Examples
+https://github.com/user-attachments/assets/c22a0a38-2443-4236-b168-081913545f0b
+
 ```jsx
+
  private fun initMsLayoutManager() {
     val msLayoutManager =
         MsCarouselLayoutManager(
@@ -370,8 +376,10 @@ class MainActivity : AppCompatActivity(), CarouselPositionListener {
     msLayoutManager.scaleView(true)
     binding.carouselRecyclerView.layoutManager = msLayoutManager
 }
+```
 
 
+```jsx
 private fun initMsCarouselLayoutManager() {
     binding.carouselRecyclerView.layoutManager =
         MsCarouselLayoutManager(
