@@ -415,17 +415,28 @@ private fun initCenterScaleLayoutManager() {
 }
 ```
 
+https://github.com/user-attachments/assets/ae8b1bcd-d4dc-4c59-b89a-65c1611e3991
+
+
 ```jsx
 private fun initBasicCarouselLayoutManager() {
     binding.carouselRecyclerView.layoutManager =
         BasicCarouselLayoutManager(this)
 }
+```
 
+https://github.com/user-attachments/assets/d27f18c6-6a01-41b4-8621-f91444ef1abb
+
+```jsx
 private fun initDepthCarouselLayoutManager() {
     binding.carouselRecyclerView.layoutManager =
        DepthCarouselLayoutManager(this)
 }
+```
 
+https://github.com/user-attachments/assets/2711dd90-ca72-4183-aa87-dff23020d0f8
+
+```jsx
 private fun initDepthCarouselLayoutManagerPlus() {
     binding.carouselRecyclerView.layoutManager =
         DepthCarouselLayoutManagerPlus(
@@ -433,7 +444,10 @@ private fun initDepthCarouselLayoutManagerPlus() {
             0.5f
         )
 }
+```
+https://github.com/user-attachments/assets/2687eebb-684c-4ff0-a091-8877005e2f0e
 
+```jsx
 
 private fun initFadeCarouselLayoutManager() {
     binding.carouselRecyclerView.layoutManager =
@@ -443,6 +457,10 @@ private fun initFadeCarouselLayoutManager() {
             fadeFactor = 0.5f
         )
 }
+```
+https://github.com/user-attachments/assets/2687eebb-684c-4ff0-a091-8877005e2f0e
+
+```jsx
 
 private fun initFlipCarouselLayoutManager() {
     binding.carouselRecyclerView.layoutManager =
@@ -451,6 +469,8 @@ private fun initFlipCarouselLayoutManager() {
             maxFlip = 50f
         )
 }
+```
+```jsx
 
 
 private fun initRotate3DCarouselLayoutManager() {
