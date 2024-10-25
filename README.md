@@ -267,8 +267,8 @@ class CarouselAdapter : RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder>
     fun removeItem(item: CarouselModel) {
         val position = items.indexOf(item)
         if (position >= 0) {
-            items.removeAt(position)
-            notifyItemRemoved(position)
+             items.remove(item)
+             notifyDataSetChanged()
             Log.e("testItems" , items.toString())
         }
     }
@@ -458,7 +458,8 @@ private fun initFadeCarouselLayoutManager() {
         )
 }
 ```
-https://github.com/user-attachments/assets/2687eebb-684c-4ff0-a091-8877005e2f0e
+
+https://github.com/user-attachments/assets/26a87b29-5244-4cf3-8b77-34c5182c36da
 
 ```jsx
 
