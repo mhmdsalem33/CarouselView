@@ -404,12 +404,18 @@ private fun initCenterLayoutManager() {
             false
         )
 }
+```
 
+https://github.com/user-attachments/assets/1a6916c9-52bb-41a9-a9a5-16d6c3fbdbca
+
+```jsx
 private fun initCenterScaleLayoutManager() {
     binding.carouselRecyclerView.layoutManager =
         CenterScaleLayoutManager(this)
 }
+```
 
+```jsx
 private fun initBasicCarouselLayoutManager() {
     binding.carouselRecyclerView.layoutManager =
         BasicCarouselLayoutManager(this)
@@ -464,37 +470,42 @@ private fun initSkewCarouselLayoutManager() {
 }
 
 private fun initSmoothUpwardCarouselLayoutManager() {
-    binding.carouselRecyclerView.layoutManager =
-        SmoothUpwardCarouselLayoutManager(
+        val layoutManager = SmoothUpwardCarouselLayoutManager(
             this,
-            30f
+            moveUpFactor = 60f,
+            scaleDownFactor = 0.2f,
+            visibleItemCount = 3
         )
-}
-
-
-private fun initSmoothZoomLayoutManager() {
-    val smoothLayoutManager =
-        SmoothZoomLayoutManager(
-            this,
-            orientation = RecyclerView.HORIZONTAL,
-            false
-        )
-    smoothLayoutManager.apply {
-        setScaleView(true)
-        setScrollSpeed(15f)
-        setShrinkAmounts(0.15f)
-        setShrinkDistance(1f)
+            .apply {
+                setItemSpacing(20)
+                setRecyclerViewPadding(binding.carouselRecyclerView)
+            }
+        binding.carouselRecyclerView.layoutManager = layoutManager
     }
-    binding.carouselRecyclerView.layoutManager = smoothLayoutManager
 
-}
 
-private fun initTiltCarouselLayoutManager() {
-    val tiltCarouselLayoutManager = TiltCarouselLayoutManager(
-        this
-    ).apply { setTiltFactor(15f) }
-    binding.carouselRecyclerView.layoutManager = tiltCarouselLayoutManager
-}
+    private fun initSmoothZoomLayoutManager() {
+        val smoothLayoutManager =
+            SmoothZoomLayoutManager(
+                this,
+                orientation = RecyclerView.HORIZONTAL,
+                false
+            )
+        smoothLayoutManager.apply {
+            setScaleView(true)
+            setScrollSpeed(1f)
+            setShrinkDistance(0.9f)
+        }
+        binding.carouselRecyclerView.layoutManager = smoothLayoutManager
+    }
+
+
+   private fun initTiltCarouselLayoutManager() {
+        val tiltCarouselLayoutManager = TiltCarouselLayoutManager(
+            this
+        ).apply { setTiltFactor(15f) }
+        binding.carouselRecyclerView.layoutManager = tiltCarouselLayoutManager
+    }
 
 private fun initWaveCarouselLayoutManager() {
     binding.carouselRecyclerView.layoutManager =
