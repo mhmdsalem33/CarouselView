@@ -471,9 +471,10 @@ private fun initFlipCarouselLayoutManager() {
         )
 }
 ```
+
+https://github.com/user-attachments/assets/ec957b8a-aea5-4f88-b2c7-1ee181005c67
+
 ```jsx
-
-
 private fun initRotate3DCarouselLayoutManager() {
     binding.carouselRecyclerView.layoutManager =
         Rotate3DCarouselLayoutManager(
@@ -481,7 +482,11 @@ private fun initRotate3DCarouselLayoutManager() {
             30f
         )
 }
+```
 
+https://github.com/user-attachments/assets/eafc5e3c-b48d-4f82-9825-628f1a1f5e76
+
+```jsx
 private fun initSkewCarouselLayoutManager() {
     binding.carouselRecyclerView.layoutManager =
         SkewCarouselLayoutManager(
@@ -489,7 +494,9 @@ private fun initSkewCarouselLayoutManager() {
             0.5f
         )
 }
+```
 
+```jsx
 private fun initSmoothUpwardCarouselLayoutManager() {
         val layoutManager = SmoothUpwardCarouselLayoutManager(
             this,
@@ -503,7 +510,10 @@ private fun initSmoothUpwardCarouselLayoutManager() {
             }
         binding.carouselRecyclerView.layoutManager = layoutManager
     }
+```
 
+https://github.com/user-attachments/assets/d26da34c-9fe0-45ee-b31b-e1b216f556e1
+```jsx
 
     private fun initSmoothZoomLayoutManager() {
         val smoothLayoutManager =
@@ -519,7 +529,10 @@ private fun initSmoothUpwardCarouselLayoutManager() {
         }
         binding.carouselRecyclerView.layoutManager = smoothLayoutManager
     }
+```
+https://github.com/user-attachments/assets/18566045-6d41-4df2-801b-a7fef2f4824e
 
+```jsx
 
    private fun initTiltCarouselLayoutManager() {
         val tiltCarouselLayoutManager = TiltCarouselLayoutManager(
@@ -527,6 +540,9 @@ private fun initSmoothUpwardCarouselLayoutManager() {
         ).apply { setTiltFactor(15f) }
         binding.carouselRecyclerView.layoutManager = tiltCarouselLayoutManager
     }
+```
+
+```jsx
 
 private fun initWaveCarouselLayoutManager() {
     binding.carouselRecyclerView.layoutManager =
