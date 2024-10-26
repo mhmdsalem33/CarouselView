@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
+import com.salem.carouselview.salem.fast_smooth_scroller.CenterFastSmoothScroller
 import com.salem.carouselview.salem.listener.CarouselPositionListener
 
 
@@ -26,13 +27,12 @@ class CarouselView @JvmOverloads constructor(
     private var isAutoScrollEnabled: Boolean = false
     private var autoScrollDelayMillis: Long = 3000
     private var isLooping: Boolean = true
-    private var scrollHandler: Handler? = null
-    private var scrollRunnable: Runnable? = null
-    private var positionListener: com.salem.carouselview.salem.listener.CarouselPositionListener? = null
+    private var positionListener: CarouselPositionListener? =
+        null
     private var onScrollListener: OnScrollListener? = null // For removing listener later
 
     private val autoScrollHandler = Handler(Looper.getMainLooper())
-    private var currentItemPosition: Int = RecyclerView.NO_POSITION
+    private var currentItemPosition: Int = NO_POSITION
 
     private var recyclerViewScrollType: Boolean? = null
 
@@ -68,7 +68,6 @@ class CarouselView @JvmOverloads constructor(
     }
 
 
-
     init {
         setHasFixedSize(true)
         itemAnimator = null
@@ -99,17 +98,45 @@ class CarouselView @JvmOverloads constructor(
     }
 
 
+    fun fastSmoothScrollToPosition( position: Int , scrollSpeed: Float = 0.05f ) {
+        val layoutManager = layoutManager as? LinearLayoutManager ?: return
+        val smoothScroller = CenterFastSmoothScroller(context, scrollSpeed)
+        smoothScroller.targetPosition = position
+        layoutManager.startSmoothScroll(smoothScroller)
+    }
+
+
+    private fun centerClosestItem() {
+        val layoutManager = layoutManager as? LinearLayoutManager ?: return
+        val snapHelper = LinearSnapHelper()
+
+        // Find the view closest to the center
+        val centerView = snapHelper.findSnapView(layoutManager)
+        centerView?.let {
+            val position = getChildAdapterPosition(it)
+
+            if (position != RecyclerView.NO_POSITION) {
+                // Snap to the closest item if it's not already centered
+                val snapDistance =
+                    snapHelper.calculateDistanceToFinalSnap(layoutManager, centerView)
+                if (snapDistance != null && (snapDistance[0] != 0 || snapDistance[1] != 0)) {
+                    smoothScrollBy(snapDistance[0], snapDistance[1]) // Center it smoothly
+                }
+            }
+        }
+    }
+
 
     fun setSmoothScrollToPosition(position: Int) {
         this.postDelayed({
             this.smoothScrollToPosition(position)
-        }, 200)
+        }, 50)
     }
 
     fun setScrollToPosition(position: Int) {
         this.postDelayed({
             this.scrollToPosition(position)
-        }, 200)
+        }, 50)
     }
 
 
@@ -118,24 +145,25 @@ class CarouselView @JvmOverloads constructor(
             return
         }
 
-        // First, scroll to the position smoothly
+        // Clear any ongoing smooth scroll animations
+        stopScroll()
+
+        // Smooth scroll to position and then ensure it centers
         smoothScrollToPosition(position)
 
-        // After the smooth scroll, we can make sure the item is centered by posting a delayed task
+        // Add a delayed task to ensure the item centers after the scroll
         postDelayed({
             val view = findViewHolderForAdapterPosition(position)?.itemView
             view?.let {
-                val snapHelper =
-                    LinearSnapHelper()  // You could use FastLinearSnapHelper if desired
+                val snapHelper = LinearSnapHelper()
                 val layoutManager = layoutManager
                 val snapDistance = snapHelper.calculateDistanceToFinalSnap(layoutManager!!, view)
-                if (snapDistance != null) {
+                if (snapDistance != null && (snapDistance[0] != 0 || snapDistance[1] != 0)) {
                     smoothScrollBy(snapDistance[0], snapDistance[1])  // Ensure the view is centered
                 }
             }
-        }, 200)
+        }, 200) // Adjust delay as needed
     }
-
 
 
     // init linear snap this code by mohamed salem
@@ -184,7 +212,7 @@ class CarouselView @JvmOverloads constructor(
         fun get the current index and selected position but you must enable the addCarouselPositionListener
         in your fragment , activity to get the current selected item position
      */
-    fun getCurrentPosition() = currentItemPosition
+    fun getCurrentSelectedPosition() = currentItemPosition
 
 
     // Remove the position listener to prevent memory leaks
@@ -201,8 +229,6 @@ class CarouselView @JvmOverloads constructor(
     fun setOrientation(@Orientation orientation: Int) {
         layoutManager = LinearLayoutManager(context, orientation, false)
     }
-
-
 
 
     @IntDef(HORIZONTAL, VERTICAL)

@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity() , CarouselPositionListener {
 
 //        binding.carouselRecyclerView.startAutoScroll()
 
-
+//        binding.carouselRecyclerView.fastSmoothScrollToPosition( position = 1  , scrollSpeed = 0.05f )
 
 
 
@@ -138,9 +138,8 @@ class MainActivity : AppCompatActivity() , CarouselPositionListener {
 
     private fun onItemCarouselViewClick() {
         carouselAdapter.onItemClick = { itemModel, position ->
-
-            binding.carouselRecyclerView.setSmoothScrollToPosition(position)
-            Log.e("testPosition" , position.toString())
+            binding.carouselRecyclerView.fastSmoothScrollToPosition(position)
+            Log.e(mainTag , "item clicked"+position.toString())
         }
     }
 
@@ -236,14 +235,17 @@ class MainActivity : AppCompatActivity() , CarouselPositionListener {
     }
 
     private fun initSmoothUpwardCarouselLayoutManager() {
-        val layoutManager = SmoothUpwardCarouselLayoutManager(this, moveUpFactor = 60f, scaleDownFactor = 0.2f, visibleItemCount = 3)
+        val layoutManager = SmoothUpwardCarouselLayoutManager(
+            this,
+            moveUpFactor = 60f,
+            scaleDownFactor = 0.2f,
+            visibleItemCount = 3
+        )
             .apply {
                 setItemSpacing(20)
                 setRecyclerViewPadding(binding.carouselRecyclerView)
             }
         binding.carouselRecyclerView.layoutManager = layoutManager
-
-
     }
 
 
@@ -260,7 +262,6 @@ class MainActivity : AppCompatActivity() , CarouselPositionListener {
             setShrinkDistance(0.9f)
         }
         binding.carouselRecyclerView.layoutManager = smoothLayoutManager
-
     }
 
     private fun initTiltCarouselLayoutManager() {

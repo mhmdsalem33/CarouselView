@@ -40,7 +40,6 @@ class CarouselAdapter : RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder>
 
         // Set click for item
         holder.itemView.setOnClickListener {
-
             onItemClick?.invoke( item ,  position)
         }
 
@@ -111,8 +110,8 @@ class CarouselAdapter : RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder>
     fun removeItem(item: CarouselModel) {
         val position = items.indexOf(item)
         if (position >= 0) {
-            items.removeAt(position)
-            notifyItemRemoved(position)
+            items.remove(item)
+            notifyDataSetChanged()
             Log.e("testItems" , items.toString())
         }
     }
