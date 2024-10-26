@@ -557,6 +557,37 @@ private fun initWaveCarouselLayoutManager() {
 
 
 ```
+ * CarouselView Helper Methods
+```jsx
+ 
+  1. Center Item with Scrolling (Optional)
+     Automatically centers items as you scroll:
+    binding.carouselRecyclerView.initLinearSnapHelper()
+ 
+
+
+
+  2. Smooth Scroll to Position
+     Smoothly scrolls the specified item to the center of the view:
+     binding.carouselRecyclerView.smoothScrollToPosition(position)
+ 
+
+
+  3. Fast Smooth Scroll to Position
+     Smoothly scrolls the specified item to the center, with customizable scroll speed. 
+     Adjust the `scrollSpeed` parameter to control the speed:
+     binding.carouselRecyclerView.fastSmoothScrollToPosition(position = 1, scrollSpeed = 0.05f)
+       - 0.1f: Fast scroll
+       - 0.05f: Very fast scroll
+       - 0.01f: Extremely fast scroll
+
+
+
+ 4. Scroll Item to Center with Delay
+    Smoothly scrolls the specified item to the center with a 200ms delay:
+    binding.carouselRecyclerView.scrollItemToCenter(position)
+ 
+```
 
 
 ```jsx
