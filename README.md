@@ -13,6 +13,7 @@ https://github.com/user-attachments/assets/c22a0a38-2443-4236-b168-081913545f0b
 - **Snap Helper Integration**: Easily integrate LinearSnapHelper or custom snap helpers for item alignment.
 - **Position Listener**: Callback to track the currently visible item position.
 - **Dynamic Item Management**: Easily add, remove, or replace items in the carousel.
+- Fast Centered Scrolling with Adjustable Speed , Smoothly scrolls items to the center at a customizable speed.
 
 ## Installation
 
